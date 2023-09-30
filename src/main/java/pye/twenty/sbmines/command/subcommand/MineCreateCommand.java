@@ -4,7 +4,6 @@ import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.session.SessionOwner;
 import com.sk89q.worldedit.world.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
