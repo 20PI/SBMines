@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import pye.twenty.sbessentials.command.SBCommand;
 import pye.twenty.sbmines.command.subcommand.MineCreateCommand;
 
-public class MinesCommand extends SBCommand {
+public class MineCommand extends SBCommand {
 
-    public MinesCommand() {
+    public MineCommand() {
         super(new MineCreateCommand());
     }
 

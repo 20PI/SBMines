@@ -1,5 +1,6 @@
 package pye.twenty.sbmines.manager;
 
+import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import pye.twenty.sbessentials.config.Config;
 import pye.twenty.sbmines.SBMines;
@@ -22,6 +23,7 @@ public class MineManager extends Config {
         for (String key : mines.keySet()) {
             config.set("mines." + key, mines.get(key).serialize());
         }
+        saveConfig();
     }
 
     private void loadMines() {
@@ -34,5 +36,9 @@ public class MineManager extends Config {
                 SBMines.INSTANCE.log("Successfully loaded mine '%s'".formatted(key));
             }
         }
+    }
+
+    public void addMine(Mine mine, String name) {
+        mines.put(name.toLowerCase(), mine);
     }
 }

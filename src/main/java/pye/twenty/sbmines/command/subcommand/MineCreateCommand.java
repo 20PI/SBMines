@@ -5,9 +5,12 @@ import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pye.twenty.sbessentials.command.SubCommand;
+import pye.twenty.sbmines.SBMines;
+import pye.twenty.sbmines.mine.Mine;
 
 public class MineCreateCommand extends SubCommand {
     public MineCreateCommand() {
@@ -15,7 +18,7 @@ public class MineCreateCommand extends SubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String[] strings) {
+    public boolean execute(CommandSender commandSender, String[] args) {
         if (!(commandSender instanceof Player player)) {
             return false;
         }
@@ -26,11 +29,18 @@ public class MineCreateCommand extends SubCommand {
             World world = session.getSelectionWorld();
             try {
                 Region selection = session.getSelection(world);
-                // TODO: Finish this
+                Mine mine = new Mine(selection.getMinimumPoint(), selection.getMaximumPoint(), selection.getWorld().getName());
+                SBMines.INSTANCE.getMineManager().addMine(mine, args[0]);
+                SBMines.INSTANCE.log("Created mine '%s'".formatted(args[0]));
+                player.sendMessage("§aSuccessfully created mine '%s'!".formatted(args[0]));
+                return false;
             } catch (IncompleteRegionException e) {
-                throw new RuntimeException(e);
+                player.sendMessage(Component.text("§cYou must select a region!"));
+                return false;
             }
         }
+
+        player.sendMessage(Component.text("§cSomething went wrong!"));
         return false;
     }
 }

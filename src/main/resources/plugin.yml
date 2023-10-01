@@ -1,6 +1,6 @@
 name: SBMines
 version: '${project.version}'
-main: pye.twenty.sbmines.SBMines
+main: pye.twenty.sbmines.SBMinesPlugin
 depend:
   - SBEssentials
   - WorldEdit
