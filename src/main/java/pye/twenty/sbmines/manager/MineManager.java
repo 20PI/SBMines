@@ -1,10 +1,8 @@
 package pye.twenty.sbmines.manager;
 
-import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import pye.twenty.sbessentials.config.Config;
 import pye.twenty.sbmines.SBMines;
-import pye.twenty.sbmines.SBMinesPlugin;
 import pye.twenty.sbmines.mine.Mine;
 
 import java.io.File;
@@ -40,5 +38,12 @@ public class MineManager extends Config {
 
     public void addMine(Mine mine, String name) {
         mines.put(name.toLowerCase(), mine);
+    }
+
+    public Optional<Mine> getMine(String name) {
+        return mines.keySet().stream()
+                .filter(s -> s.equalsIgnoreCase(name))
+                .findFirst()
+                .map(mines::get);
     }
 }

@@ -32,7 +32,7 @@ public class MineCreateCommand extends SubCommand {
                 Mine mine = new Mine(selection.getMinimumPoint(), selection.getMaximumPoint(), selection.getWorld().getName());
                 SBMines.INSTANCE.getMineManager().addMine(mine, args[0]);
                 SBMines.INSTANCE.log("Created mine '%s'".formatted(args[0]));
-                player.sendMessage("§aSuccessfully created mine '%s'!".formatted(args[0]));
+                player.sendMessage(Component.text("§aSuccessfully created mine '%s'!".formatted(args[0])));
                 return false;
             } catch (IncompleteRegionException e) {
                 player.sendMessage(Component.text("§cYou must select a region!"));
