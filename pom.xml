@@ -75,7 +75,7 @@
             <artifactId>SBEssentials</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/SBEssentials-1.0.jar</systemPath>
+            <systemPath>/home/20PI/IdeaProjects/SBEssentials/target/SBEssentials-1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>

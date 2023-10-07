@@ -19,7 +19,7 @@ public class MineManager extends Config {
 
     public void saveMines() {
         for (String key : mines.keySet()) {
-            config.set("mines." + key, mines.get(key).serialize());
+            config.set("mines." + key, mines.get(key));
         }
         saveConfig();
     }
@@ -30,6 +30,7 @@ public class MineManager extends Config {
             for (String key : section.getKeys(false)) {
                 Mine mine = section.getSerializable(key, Mine.class);
                 mines.put(key, mine);
+
 
                 SBMines.INSTANCE.log("Successfully loaded mine '%s'".formatted(key));
             }

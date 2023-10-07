@@ -1,6 +1,7 @@
 package pye.twenty.sbmines.mine;
 
 import com.sk89q.worldedit.math.BlockVector3;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,23 +12,28 @@ import pye.twenty.sbmines.SBMines;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+
 @SerializableAs("Mine")
 public class Mine implements ConfigurationSerializable {
 
     private final Location minLocation;
     private final Location maxLocation;
 
-    private final Map<Material, Integer> materials = new HashMap<>();
+    @Getter
+    private final Map<Material, Integer> materials;
 
     public Mine(BlockVector3 minLocation, BlockVector3 maxLocation, String worldName) {
         World world = SBMines.INSTANCE.getPlugin().getServer().getWorld(worldName);
         this.minLocation = new Location(world, minLocation.getX(), minLocation.getY(), minLocation.getZ());
         this.maxLocation = new Location(world, maxLocation.getX(), maxLocation.getY(), maxLocation.getZ());
+        materials = new HashMap<>();
     }
 
-    public Mine(Location minLocation, Location maxLocation) {
+    public Mine(Location minLocation, Location maxLocation, Map<Material, Integer> materials) {
         this.minLocation = minLocation;
         this.maxLocation = maxLocation;
+        this.materials = materials;
     }
 
     public int totalChance() {
@@ -44,7 +50,7 @@ public class Mine implements ConfigurationSerializable {
 
     public boolean addMaterial(Material material, int chance) {
         int remainingChance = remainingChance() - materials.getOrDefault(material, 0);
-        if (remainingChance <= chance) {
+        if (remainingChance >= chance) {
             this.materials.put(material, chance);
             return true;
         }
@@ -54,17 +60,38 @@ public class Mine implements ConfigurationSerializable {
     @Override
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> serializedData = new HashMap<>();
-        serializedData.put("minLocation", minLocation.serialize());
-        serializedData.put("maxLocation", maxLocation.serialize());
+        serializedData.put("minLocation", minLocation);
+        serializedData.put("maxLocation", maxLocation);
+        Map<String, Integer> serializedMaterials = new HashMap<>();
+        for (Map.Entry<Material, Integer> entry : materials.entrySet()) {
+            serializedMaterials.put(entry.getKey().name(), entry.getValue());
+        }
+        serializedData.put("materials", serializedMaterials);
         return serializedData;
     }
 
-    public static Mine deserialize(Map<String, Object> serializedData) {
-        Location minLocation = Location.deserialize((Map<String, Object>) serializedData.get("minLocation"));
-        Location maxLocation = Location.deserialize((Map<String, Object>) serializedData.get("maxLocation"));
-        return new Mine(minLocation, maxLocation);
+    public static Mine deserialize(Map<String, Object> args) {
+        if (args == null) {
+            throw new IllegalArgumentException("The 'args' argument cannot be null.");
+        }
+
+        Location minLocation = (Location) args.get("minLocation");
+        Location maxLocation = (Location) args.get("maxLocation");
+
+        Map<Material, Integer> materials = new HashMap<>();
+        Map<String, Integer> serializedMaterials = (Map<String, Integer>) args.get("materials");
+
+        if (serializedMaterials != null) {
+            for (Map.Entry<String, Integer> entry : serializedMaterials.entrySet()) {
+                Material material = Material.getMaterial(entry.getKey());
+                if (material != null) {
+                    materials.put(material, entry.getValue());
+                } else {
+                    SBMines.INSTANCE.log(Level.WARNING, "Material not found in mine!");
+                }
+            }
+        }
+
+        return new Mine(minLocation, maxLocation, materials);
     }
-
-
-
 }
