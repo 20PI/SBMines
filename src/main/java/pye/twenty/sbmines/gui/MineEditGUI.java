@@ -18,8 +18,6 @@ import pye.twenty.sbmines.mine.Mine;
 @Label(label = "Editing Mine")
 public class MineEditGUI extends GUI {
 
-    // TODO: close function
-    // TODO: addSlot method with 2 parameters
     private final Mine mine;
 
     public MineEditGUI(Player player, Mine mine) {
