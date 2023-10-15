@@ -1,5 +1,7 @@
 package pye.twenty.sbmines.gui;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,13 +18,12 @@ import pye.twenty.sbmines.mine.Mine;
 
 @Slots(slots = 9 * 6)
 @Label(label = "Editing Mine")
-public class MineEditGUI extends GUI {
+public class MineEditGUI extends GUI { // TODO: warning function in GUI class
 
     private final Mine mine;
 
-    public MineEditGUI(Player player, Mine mine) {
+    public MineEditGUI(Mine mine) {
         this.mine = mine;
-
     }
 
     @Override
@@ -33,7 +34,7 @@ public class MineEditGUI extends GUI {
             int chance = mine.getMaterials().get(material);
             ItemStack entry = new ItemBuilder(material)
                     .lore(
-                            "§7Chance: §e%.2f%%".formatted(chance / 10f),
+                            "§7Chance: §e%.1f%%".formatted(chance / 10f),
                             "",
                             "§8Drag in material to change type!",
                             "§eClick to edit chance!"
@@ -49,8 +50,23 @@ public class MineEditGUI extends GUI {
                         mine.getMaterials().remove(e.getCurrentItem().getType());
                     }
                     reopen();
+                    return;
                 }
-                // TODO: edit chance
+                signInput(
+                        new String[] {
+                                "",
+                                "^^^^^^^^^^^^^^^",
+                                "enter new",
+                                "chance"
+                        }, input -> {
+                            try {
+                                int percent = (int) (Double.parseDouble(input) * 10);
+                                mine.getMaterials().put(material, percent);
+                            } catch (NumberFormatException exception) {
+                                player.sendMessage("§cFailed to read number!");
+                            }
+                        }
+                );
             });
         }
 

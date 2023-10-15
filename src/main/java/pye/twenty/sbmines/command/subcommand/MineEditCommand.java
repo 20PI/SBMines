@@ -20,7 +20,7 @@ public class MineEditCommand extends SubCommand {
         SBMines.INSTANCE.log("test");
 
         SBMines.INSTANCE.getMineManager().getMine(args[0]).ifPresentOrElse(m -> {
-            SBEssentials.openGUI(player, new MineEditGUI(player, m));
+            SBEssentials.openGUI(player, new MineEditGUI(m));
         }, () -> {
 
         });
