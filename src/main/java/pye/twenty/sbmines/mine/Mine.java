@@ -17,16 +17,14 @@ import java.util.logging.Level;
 @SerializableAs("Mine")
 public class Mine implements ConfigurationSerializable {
 
-    private final Location minLocation;
-    private final Location maxLocation;
+    private Location minLocation;
+    private Location maxLocation;
 
     @Getter
     private final Map<Material, Integer> materials;
 
     public Mine(BlockVector3 minLocation, BlockVector3 maxLocation, String worldName) {
-        World world = SBMines.INSTANCE.getPlugin().getServer().getWorld(worldName);
-        this.minLocation = new Location(world, minLocation.getX(), minLocation.getY(), minLocation.getZ());
-        this.maxLocation = new Location(world, maxLocation.getX(), maxLocation.getY(), maxLocation.getZ());
+        updateRegion(minLocation, maxLocation, worldName);
         materials = new HashMap<>();
     }
 
@@ -34,6 +32,12 @@ public class Mine implements ConfigurationSerializable {
         this.minLocation = minLocation;
         this.maxLocation = maxLocation;
         this.materials = materials;
+    }
+
+    public void updateRegion(BlockVector3 minLocation, BlockVector3 maxLocation, String worldName) {
+        World world = SBMines.INSTANCE.getPlugin().getServer().getWorld(worldName);
+        this.minLocation = new Location(world, minLocation.getX(), minLocation.getY(), minLocation.getZ());
+        this.maxLocation = new Location(world, maxLocation.getX(), maxLocation.getY(), maxLocation.getZ());
     }
 
     public int totalChance() {

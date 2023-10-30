@@ -17,12 +17,11 @@ public class MineEditCommand extends SubCommand {
         if (!(commandSender instanceof Player player)) {
             return false;
         }
-        SBMines.INSTANCE.log("test");
 
         SBMines.INSTANCE.getMineManager().getMine(args[0]).ifPresentOrElse(m -> {
             SBEssentials.openGUI(player, new MineEditGUI(m));
         }, () -> {
-
+            player.sendMessage("§cCould not find mine with name '%s'".formatted(args[0]));
         });
         return false;
     }

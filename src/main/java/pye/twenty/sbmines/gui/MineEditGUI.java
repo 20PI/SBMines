@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import pye.twenty.sbessentials.SBEssentials;
 import pye.twenty.sbessentials.gui.GUI;
 import pye.twenty.sbessentials.gui.Label;
 import pye.twenty.sbessentials.gui.Slot;
@@ -15,6 +16,8 @@ import pye.twenty.sbessentials.util.GUIUtils;
 import pye.twenty.sbessentials.util.ItemBuilder;
 import pye.twenty.sbmines.SBMines;
 import pye.twenty.sbmines.mine.Mine;
+
+import java.util.logging.Level;
 
 @Slots(slots = 9 * 6)
 @Label(label = "Editing Mine")
@@ -34,7 +37,8 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
             int chance = mine.getMaterials().get(material);
             ItemStack entry = new ItemBuilder(material)
                     .lore(
-                            "§7Chance: §e%.1f%%".formatted(chance / 10f),
+                            "§7Chance: §a%.1f%%".formatted(chance / 10f),
+                            "§7Max chance: §e%.1f%%".formatted((mine.remainingChance() + mine.getMaterials().get(material)) / 10f),
                             "",
                             "§8Drag in material to change type!",
                             "§eClick to edit chance!"
@@ -61,7 +65,11 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
                         }, input -> {
                             try {
                                 int percent = (int) (Double.parseDouble(input) * 10);
-                                mine.getMaterials().put(material, percent);
+                                if (mine.remainingChance() + mine.getMaterials().get(material) >= percent) {
+                                    mine.getMaterials().put(material, percent);
+                                } else {
+                                    player.sendMessage("§cNot enough chance remaining!");
+                                }
                             } catch (NumberFormatException exception) {
                                 player.sendMessage("§cFailed to read number!");
                             }
@@ -76,6 +84,15 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
 
         ItemStack add = new ItemBuilder(Material.OAK_BUTTON).name("§eAdd ore").lore("§eClick to add ore!").build();
         addSlot(Slot.SIXTH.getCenter() + 1, add, e -> {
+            mine.addMaterial(Material.BEDROCK, 0);
+            reopen();
+        });
+
+        ItemStack info = new ItemBuilder(Material.PAPER).name("§eInformation")
+                .lore("§7Remaining chance: %s%.1f%%".formatted(mine.remainingChance() == 0 ? "§a" : "§e", mine.remainingChance() / 10f))
+                .lore("§7Reset time: §c5m")
+                .build();
+        addSlot(Slot.SIXTH.getCenter() - 1, info, e -> {
             mine.addMaterial(Material.BEDROCK, 0);
             reopen();
         });
