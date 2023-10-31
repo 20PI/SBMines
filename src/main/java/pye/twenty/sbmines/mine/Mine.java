@@ -8,11 +8,15 @@ import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
+import pye.twenty.sbessentials.util.NumberUtils;
 import pye.twenty.sbmines.SBMines;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @SerializableAs("Mine")
 public class Mine implements ConfigurationSerializable {
@@ -38,6 +42,33 @@ public class Mine implements ConfigurationSerializable {
         World world = SBMines.INSTANCE.getPlugin().getServer().getWorld(worldName);
         this.minLocation = new Location(world, minLocation.getX(), minLocation.getY(), minLocation.getZ());
         this.maxLocation = new Location(world, maxLocation.getX(), maxLocation.getY(), maxLocation.getZ());
+    }
+
+    public void reset() {
+        World world = minLocation.getWorld();
+        for (int x = minLocation.getBlockX(); x < maxLocation.getBlockX(); x++) {
+            for (int y = minLocation.getBlockY(); y < maxLocation.getBlockY(); y++) {
+                for (int z = minLocation.getBlockZ(); z < maxLocation.getBlockZ(); z++) {
+                    new Location(world, x, y, z).getBlock().setType(randomMaterial());
+                }
+            }
+        }
+    }
+
+    private Material randomMaterial() {
+
+
+        float random = NumberUtils.randomInt(1000);
+
+        float total = 0;
+        for (Material material : materials.keySet()) {
+            float chance = materials.get(material);
+            total += chance;
+            if (random <= total) {
+                return material;
+            }
+        }
+        return Material.BEDROCK;
     }
 
     public int totalChance() {

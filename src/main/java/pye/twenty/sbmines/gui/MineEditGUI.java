@@ -45,13 +45,19 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
                     ).build();
 
             addSlot(entry, e -> {
+                if (!e.getClickedInventory().equals(inventory)) {
+                    return;
+                }
+
                 Material cursor = e.getCursor().getType();
                 if (!cursor.isAir() && e.getCurrentItem() != null) {
-                    if (mine.getMaterials().containsKey(cursor)) {
-                        mine.getMaterials().remove(cursor);
-                    } else {
-                        mine.getMaterials().put(cursor, mine.getMaterials().get(e.getCurrentItem().getType()));
-                        mine.getMaterials().remove(e.getCurrentItem().getType());
+                    if (e.getCursor().getType().isBlock()) {
+                        if (mine.getMaterials().containsKey(cursor)) {
+                            mine.getMaterials().remove(cursor);
+                        } else {
+                            mine.getMaterials().put(cursor, mine.getMaterials().get(e.getCurrentItem().getType()));
+                            mine.getMaterials().remove(e.getCurrentItem().getType());
+                        }
                     }
                     reopen();
                     return;

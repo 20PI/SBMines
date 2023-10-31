@@ -14,10 +14,9 @@ public class MineListCommand extends SubCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Set<String> mines = SBMines.INSTANCE.getMineManager().getMines();
-        sender.sendMessage("§7Total mines %d".formatted(mines.size()));
-        sender.sendMessage("§7Mines:".formatted(mines.size()));
+        sender.sendMessage("§7Mines (%d):".formatted(mines.size()));
         for (String key : mines) {
-            sender.sendMessage("§7 - §e%s".formatted(key));
+            sender.sendMessage("§7 - §a%s".formatted(key));
         }
         return false;
     }

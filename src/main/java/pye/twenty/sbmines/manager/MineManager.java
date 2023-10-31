@@ -42,6 +42,16 @@ public class MineManager extends Config {
         mines.put(name.toLowerCase(), mine);
     }
 
+    public void removeMine(String key) {
+        if (!mines.containsKey(key)) {
+            return;
+        }
+
+        config.set("mines.%s".formatted(key), null);
+        mines.remove(key);
+        saveMines();
+    }
+
     public Optional<Mine> getMine(String name) {
         return mines.keySet().stream()
                 .filter(s -> s.equalsIgnoreCase(name))
