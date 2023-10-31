@@ -7,6 +7,9 @@ import pye.twenty.sbessentials.command.SubCommand;
 import pye.twenty.sbmines.SBMines;
 import pye.twenty.sbmines.gui.MineEditGUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MineResetCommand extends SubCommand {
     public MineResetCommand() {
         super("reset", 1);
@@ -21,5 +24,10 @@ public class MineResetCommand extends SubCommand {
             sender.sendMessage("§cCould not find mine with name '%s'".formatted(args[0]));
         });
         return false;
+    }
+
+    @Override
+    public List<String> getAutocomplete() {
+        return new ArrayList<>(SBMines.INSTANCE.getMineManager().getMines());
     }
 }

@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import pye.twenty.sbessentials.command.SubCommand;
 import pye.twenty.sbmines.SBMines;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MineRegionCommand extends SubCommand {
     public MineRegionCommand() {
         super("region", 1);
@@ -45,5 +48,10 @@ public class MineRegionCommand extends SubCommand {
 
 
         return false;
+    }
+
+    @Override
+    public List<String> getAutocomplete() {
+        return new ArrayList<>(SBMines.INSTANCE.getMineManager().getMines());
     }
 }

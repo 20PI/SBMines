@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 import pye.twenty.sbessentials.command.SubCommand;
 import pye.twenty.sbmines.SBMines;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MineDeleteCommand extends SubCommand {
     public MineDeleteCommand() {
         super("delete", 1);
@@ -19,5 +22,10 @@ public class MineDeleteCommand extends SubCommand {
             sender.sendMessage("§cCould not find mine with name '%s'".formatted(args[0]));
         });
         return false;
+    }
+
+    @Override
+    public List<String> getAutocomplete() {
+        return new ArrayList<>(SBMines.INSTANCE.getMineManager().getMines());
     }
 }
