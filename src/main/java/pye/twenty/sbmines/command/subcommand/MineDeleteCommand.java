@@ -1,7 +1,6 @@
 package pye.twenty.sbmines.command.subcommand;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import pye.twenty.sbessentials.command.SubCommand;
 import pye.twenty.sbmines.SBMines;
 

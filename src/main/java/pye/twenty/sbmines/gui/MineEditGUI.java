@@ -1,13 +1,9 @@
 package pye.twenty.sbmines.gui;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import pye.twenty.sbessentials.SBEssentials;
 import pye.twenty.sbessentials.gui.GUI;
 import pye.twenty.sbessentials.gui.Label;
 import pye.twenty.sbessentials.gui.Slot;
@@ -16,8 +12,6 @@ import pye.twenty.sbessentials.util.GUIUtils;
 import pye.twenty.sbessentials.util.ItemBuilder;
 import pye.twenty.sbmines.SBMines;
 import pye.twenty.sbmines.mine.Mine;
-
-import java.util.logging.Level;
 
 @Slots(slots = 9 * 6)
 @Label(label = "Editing Mine")

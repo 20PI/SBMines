@@ -1,11 +1,8 @@
 package pye.twenty.sbmines.command.subcommand;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import pye.twenty.sbessentials.SBEssentials;
 import pye.twenty.sbessentials.command.SubCommand;
 import pye.twenty.sbmines.SBMines;
-import pye.twenty.sbmines.gui.MineEditGUI;
 
 import java.util.ArrayList;
 import java.util.List;

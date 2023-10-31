@@ -1,6 +1,5 @@
 package pye.twenty.sbmines.manager;
 
-import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import pye.twenty.sbessentials.config.Config;
 import pye.twenty.sbmines.SBMines;
