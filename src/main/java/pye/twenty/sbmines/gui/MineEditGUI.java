@@ -10,6 +10,7 @@ import pye.twenty.sbessentials.gui.Slot;
 import pye.twenty.sbessentials.gui.Slots;
 import pye.twenty.sbessentials.util.GUIUtils;
 import pye.twenty.sbessentials.util.ItemBuilder;
+import pye.twenty.sbessentials.util.StringUtils;
 import pye.twenty.sbmines.SBMines;
 import pye.twenty.sbmines.mine.Mine;
 
@@ -78,6 +79,8 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
             });
         }
 
+
+
         addSlot(Slot.SIXTH.getCenter(), new ItemBuilder(Material.BARRIER).name("§cClose").build(), e -> {
             player.closeInventory();
         });
@@ -86,6 +89,30 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
         addSlot(Slot.SIXTH.getCenter() + 1, add, e -> {
             mine.addMaterial(Material.BEDROCK, 0);
             reopen();
+        });
+
+        ItemStack delay = new ItemBuilder(Material.CLOCK).name("§cReset delay")
+                .lore("§7Current delay: §c%s".formatted(StringUtils.formatSeconds(mine.getDelay())))
+                .lore("")
+                .lore("§eClick to change delay!")
+                .build();
+
+        addSlot(Slot.SIXTH.getCenter() - 2, delay, e -> {
+            signInput(
+                    new String[]{
+                            "",
+                            "^^^^^^^^^^^^^^^",
+                            "enter new",
+                            "delay (seconds)"
+                    }, input -> {
+                        try {
+                            int seconds = (int) Integer.parseInt(input);
+                            mine.setDelay(seconds);
+                        } catch (NumberFormatException exception) {
+                            player.sendMessage("§cFailed to read number!");
+                        }
+                    }
+            );
         });
 
         ItemStack info = new ItemBuilder(Material.PAPER).name("§eInformation")
@@ -101,6 +128,10 @@ public class MineEditGUI extends GUI { // TODO: warning function in GUI class
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
+        if (event.getClickedInventory() == null) {
+            return;
+        }
+
         if (event.getClickedInventory().equals(inventory)) {
             event.setCancelled(true);
         }
